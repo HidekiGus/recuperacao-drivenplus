@@ -4,12 +4,11 @@ import { BrowserRouter, Routes, Route, Link, useParams, useNavigate } from "reac
 import axios from "axios";
 import styled from "styled-components";
 
-export default function TelaSubscriptions() {
+export default function TelaHome() {
 
     return (
         <>
-        <h1>EU SOU A TELA SUBSCRIPTIONS</h1>
+        <h1>EU SOU A TELA HOME</h1>
         </>
     );
-
 }

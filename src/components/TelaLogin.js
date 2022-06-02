@@ -1,14 +1,19 @@
 import ReactDOM from "react-dom";
 import React, { useEffect, useState } from "react";
-import { BrowserRouter, Routes, Route, Link, useParams } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Link, useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
 
 import Logo from "../images/Logo.png";
 
+import TokenContext from "../contexts/TokenContext";
+import { useContext } from "react";
+
 
 export default function TelaLogin() {
 
+    const navigate = useNavigate();
+    const { token, setToken } = useContext(TokenContext);
     const [ email, setEmail ] = useState('');
     const [ password, setPassword ] = useState('');
 
@@ -24,8 +29,18 @@ export default function TelaLogin() {
         const promessa = axios.post("https://mock-api.driven.com.br/api/v4/driven-plus/auth/login", corpo);
 
         promessa.then((response) => {
+            let assinatura = response.data.membership;
             console.log(response.data);
-            console.log(response.data.membership);
+            console.log(assinatura);
+            let tokenRecebido = response.data.token;
+            setToken(tokenRecebido);
+            console.log(tokenRecebido);
+            if (assinatura === null) {
+                navigate("/subscriptions");
+            } else {
+                navigate("/home");
+            }
+
         });
 
         promessa.catch(() => alert("Confira os dados inseridos."));
