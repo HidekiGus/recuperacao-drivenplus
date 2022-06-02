@@ -19,20 +19,32 @@ export default function TelaCadastro() {
 
         setIsDisabled(true);
 
-        // const corpo = {
-        //     email,
-        //     name: nome,
-        //     image: foto,
-        //     password: password
-        // }
+        let cpfFormatado = CPF.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+        
+        const corpo = {
+            email,
+            name: nome,
+            cpf: cpfFormatado,
+            password,
+        };
 
 
-        // const promessa = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up", corpo);
+        let promessa = axios.post("https://mock-api.driven.com.br/api/v4/driven-plus/auth/sign-up", corpo);
 
-        // promessa.then(() => navigate("/"))
+        promessa.then((response) => {
+            navigate("/");
+            // let a = response.data;
+            // setDados(a);
+            // console.log(a);
+            // console.log(a.membership);
+            }
+        );
 
-        // promessa.catch(() => setIsDisabled(false))
-            
+        promessa.catch(() => {
+            setIsDisabled(false);
+            alert("Confira os dados inseridos.");
+            }
+        );
     }
 
 
@@ -111,7 +123,7 @@ const Tela = styled.div`
 `
 
 const Cadastro = styled.div`
-    font-family: 'Lexend Deca';
+    font-family: 'Roboto';
     font-weight: 400;
     font-size: 18px;
     text-align: center;
