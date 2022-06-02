@@ -12,10 +12,29 @@ export default function TelaLogin() {
     const [ email, setEmail ] = useState('');
     const [ password, setPassword ] = useState('');
 
+    function logar(event) {
+
+        event.preventDefault();
+
+        const corpo = {
+            email,
+            password
+        };
+
+        const promessa = axios.post("https://mock-api.driven.com.br/api/v4/driven-plus/auth/login", corpo);
+
+        promessa.then((response) => {
+            console.log(response.data);
+            console.log(response.data.membership);
+        });
+
+        promessa.catch(() => alert("Confira os dados inseridos."));
+    };
+
     return (
-        <Tela>
+        <Tela> 
             <img src={Logo} />
-            <form>
+            <form onSubmit={logar}>
                 <input required placeholder="E-mail" type="text" disabled={false} value={email} onChange={(e) => setEmail(e.target.value)} />
                 <input required placeholder="Senha" type="password" disabled={false} value={password} onChange={(e) => setPassword(e.target.value)} />
                 <button disabled={false} type="submit">ENTRAR</button> 
