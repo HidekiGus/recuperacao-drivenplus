@@ -32,7 +32,7 @@ export default function TelaPlanos() {
             <h1>Escolha seu Plano</h1>
             <Planos>
                 {planos.length === 0 ? "" :
-                planos.map((plano, index) => <Plano key={index} imagem={plano.image} preco={plano.price} />
+                planos.map((plano, index) => <Plano key={index} imagem={plano.image} preco={plano.price} id={plano.id}/>
                 )}
             </Planos>
         </Tela>
@@ -40,16 +40,18 @@ export default function TelaPlanos() {
     );
 }
 
-function Plano({ imagem, preco }) {
+function Plano({ imagem, preco, id }) {
 
     let precoFormatado = preco.replace(".", ",");
     precoFormatado = "R$ " + precoFormatado;
 
     return(
-        <CardPlano>
-            <img src={imagem} />
-            <h1>{precoFormatado}</h1>
-        </CardPlano>
+        <Link to={`/subscriptions/${id}`}>
+            <CardPlano>
+                <img src={imagem} />
+                <h1>{precoFormatado}</h1>
+            </CardPlano>
+        </Link>
     );
 }
 
@@ -82,8 +84,8 @@ const Planos = styled.div`
 `
 
 const CardPlano = styled.div`
-    width: 80%;
-    height: 30%;
+    width: 80vw;
+    height: 25vh;
     border: 3px solid #7e7e7e;
     border-radius: 12px;
 

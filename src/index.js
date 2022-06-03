@@ -9,6 +9,7 @@ import TelaLogin from "./components/TelaLogin";
 import TelaCadastro from "./components/TelaCadastro";
 import TelaHome from "./components/TelaHome";
 import TelaPlanos from "./components/TelaPlanos";
+import TelaPlano from "./components/TelaPlano";
 
 import TokenContext from "./contexts/TokenContext";
 
@@ -24,7 +25,7 @@ export default function App() {
                     <Route path="/" element={<TelaLogin />} />
                     <Route path="/sign-up" element={<TelaCadastro />} />
                     <Route path="/subscriptions" element={<TelaPlanos />} />
-                    {/* <Route path="/subscriptions/:idDoPlano" element={<TelaPlano />} /> */}
+                    <Route path="/subscriptions/:idDoPlano" element={<TelaPlano />} />
                     <Route path="/home" element={<TelaHome />} />
                 </Routes>
             </BrowserRouter>
