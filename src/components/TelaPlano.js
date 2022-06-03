@@ -62,13 +62,15 @@ export default function TelaPlano() {
                 <h1>R$ {preco.replace(".", ",")} cobrados mensalmente</h1>
             </Informacoes>
             <DadosDoCartao>
-                <InputMaior placeholder="Nome impresso no cartão"/>
-                <InputMaior placeholder="Dígitos do cartão"/>
-                <InputsMenores>
-                    <InputMenor placeholder="Código de segurança"/>
-                    <InputMenor placeholder="Validade"/>
-                </InputsMenores>
-                <Botao>ASSINAR</Botao>
+                <form>
+                    <input required placeholder="Nome impresso no cartão" onChange={(e) => setNomeCartao(e.target.value)}/>
+                    <input required placeholder="Dígitos do cartão" onChange={(e) => setDigitosCartao(e.target.value)}/>
+                    <InputsMenores>
+                        <input required placeholder="Código de segurança" onChange={(e) => setCodigoCartao(e.target.value)}/>
+                        <input required placeholder="Validade" onChange={(e) => setValidadeCartao(e.target.value)}/>
+                    </InputsMenores>
+                    <button type="submit">ASSINAR</button>
+                </form>
             </DadosDoCartao>
         </Tela>
     );
@@ -170,65 +172,66 @@ const TituloSecao = styled.div`
 const DadosDoCartao = styled.div`
     width: 80vw;
     height: fit-content;
-`
+    
 
-const InputMaior = styled.input`
-    width: 80vw;
-    height: 7vh;
-    background-color: #FFFFFF;
-    margin-bottom: 6px;
+    input {
+        width: 80vw;
+        height: 7vh;
+        background-color: #FFFFFF;
+        margin-bottom: 6px;
 
-    border-radius: 8px;
-    border: 1px solid #FFFFFF;
+        border-radius: 8px;
+        border: 1px solid #FFFFFF;
 
-    ::placeholder{
-        font-family: 'Roboto';
-        font-size: 14px;
-        color: #7E7E7E;
-        padding-left: 5px;
+        ::placeholder{
+            font-family: 'Roboto';
+            font-size: 14px;
+            color: #7E7E7E;
+            padding-left: 5px;
+        }
     }
-`
 
-const InputMenor = styled.input`
-    width: 38vw;
-    height: 7vh;
-    background-color: #FFFFFF;
-    margin-bottom: 6px;
+    button {
+        width: 82vw;
+        height: 7vh;
+        background-color: #FF4791;
+        margin-bottom: 6px;
 
-    border-radius: 8px;
-    border: 1px solid #FFFFFF;
+        border-radius: 8px;
+        border: 1px solid #FF4791;
 
-    ::placeholder{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
         font-family: 'Roboto';
         font-size: 14px;
-        color: #7E7E7E;
-        padding-left: 5px;
+        font-weight: 700;
+        color: #FFFFFF;
     }
 `
 
 const InputsMenores = styled.div`
+    input {
+        width: 38vw;
+        height: 7vh;
+        background-color: #FFFFFF;
+        margin-bottom: 6px;
+
+        border-radius: 8px;
+        border: 1px solid #FFFFFF;
+        
+
+        ::placeholder{
+            font-family: 'Roboto';
+            font-size: 14px;
+            color: #7E7E7E;
+            padding-left: 5px;
+        }
+    }
     width: 82vw;
     height: fit-content;
     display: flex;
     align-items: center;
     justify-content: space-between;
-`
-
-const Botao = styled.button`
-    width: 82vw;
-    height: 7vh;
-    background-color: #FF4791;
-    margin-bottom: 6px;
-
-    border-radius: 8px;
-    border: 1px solid #FF4791;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    font-family: 'Roboto';
-    font-size: 14px;
-    font-weight: 700;
-    color: #FFFFFF;
 `
