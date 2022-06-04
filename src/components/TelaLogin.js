@@ -7,6 +7,7 @@ import styled from "styled-components";
 import Logo from "../images/Logo.png";
 
 import TokenContext from "../contexts/TokenContext";
+import DadosLoginContext from "../contexts/DadosLoginContext";
 import { useContext } from "react";
 
 
@@ -14,6 +15,7 @@ export default function TelaLogin() {
 
     const navigate = useNavigate();
     const { token, setToken } = useContext(TokenContext);
+    const { dadosLogin, setDadosLogin } = useContext(DadosLoginContext);
     const [ email, setEmail ] = useState('');
     const [ password, setPassword ] = useState('');
 
@@ -30,6 +32,7 @@ export default function TelaLogin() {
 
         promessa.then((response) => {
             let assinatura = response.data.membership;
+            setDadosLogin(response.data);
             console.log(response.data);
             console.log(assinatura);
             let tokenRecebido = response.data.token;

@@ -12,17 +12,17 @@ import TelaPlanos from "./components/TelaPlanos";
 import TelaPlano from "./components/TelaPlano";
 
 import TokenContext from "./contexts/TokenContext";
-import DadosAssinaturaContext from "./contexts/DadosAssinaturaContext";
+import DadosLoginContext from "./contexts/DadosLoginContext";
 
 export default function App() {
 
     const [ token, setToken ] = useState('');
-    const [ dadosAssinatura, setDadosAssinatura ] = useState([]);
+    const [ dadosLogin, setDadosLogin ] = useState([]);
 
     return(
         <>
         <TokenContext.Provider value={{ token, setToken }}>
-            <DadosAssinaturaContext.Provider value={{ dadosAssinatura, setDadosAssinatura }}>
+            <DadosLoginContext.Provider value={{ dadosLogin, setDadosLogin }}>
                 <BrowserRouter>
                     <Routes>
                         <Route path="/" element={<TelaLogin />} />
@@ -32,7 +32,7 @@ export default function App() {
                         <Route path="/home" element={<TelaHome />} />
                     </Routes>
                 </BrowserRouter>
-            </DadosAssinaturaContext.Provider>
+            </DadosLoginContext.Provider>
         </TokenContext.Provider>
         </>
     );

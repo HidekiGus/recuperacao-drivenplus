@@ -5,7 +5,7 @@ import axios from "axios";
 import styled from "styled-components";
 
 import TokenContext from "../contexts/TokenContext";
-import DadosAssinaturaContext from "../contexts/DadosAssinaturaContext";
+import DadosAssinaturaContext from "../contexts/DadosLoginContext";
 import { useContext } from "react";
 
 import seta from "../images/seta.png";
@@ -66,7 +66,6 @@ export default function TelaPlano() {
         promessa.then((response) => {
             setDadosAssinatura(response);
             navigate("/home");
-            console.log("deu certo");
         });
 
         promessa.catch(() => alert("Confira os dados inseridos."))
