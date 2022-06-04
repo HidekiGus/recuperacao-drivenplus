@@ -1,19 +1,23 @@
 import ReactDOM from "react-dom";
 import React, { useEffect, useState } from "react";
-import { BrowserRouter, Routes, Route, Link, useParams, useNavigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Link, useParams, useNavigate, Navigate } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
 
 import TokenContext from "../contexts/TokenContext";
+import DadosAssinaturaContext from "../contexts/DadosAssinaturaContext";
 import { useContext } from "react";
 
 import seta from "../images/seta.png";
 import prancheta from "../images/prancheta.png";
 import nota from "../images/nota.png";
+import fechar from "../images/fechar.png";
 
 export default function TelaPlano() {
     
+    const navigate = useNavigate();
     const { token } = useContext(TokenContext);
+    const { dadosAssinatura, setDadosAssinatura } = useContext(DadosAssinaturaContext);
     const { idDoPlano } = useParams();
     const [ dados, setDados ] = useState([]);
     const [ beneficios, setBeneficios ] = useState([]);
@@ -22,6 +26,7 @@ export default function TelaPlano() {
     const [ digitosCartao, setDigitosCartao ] = useState('');
     const [ codigoCartao, setCodigoCartao ] = useState('');
     const [ validadeCartao, setValidadeCartao ] = useState('');
+    const [ popupLigado, setPopupLigado ] = useState(false);
     
     useEffect(() => {
         let config = {
@@ -35,6 +40,37 @@ export default function TelaPlano() {
                                     setBeneficios(resposta.data.perks)
                                     setPreco(resposta.data.price)});
     }, []);
+
+    function enviarPedidoAssinatura() {
+
+        setPopupLigado(false); 
+
+        let config = {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        }
+
+        let corpo = {
+            membershipId: Number(idDoPlano),
+            cardName: nomeCartao,
+            cardNumber: digitosCartao,
+            securityNumber: Number(codigoCartao),
+            expirationDate: validadeCartao
+        }
+
+        console.log(corpo);
+
+        const promessa = axios.post("https://mock-api.driven.com.br/api/v4/driven-plus/subscriptions", corpo, config);
+
+        promessa.then((response) => {
+            setDadosAssinatura(response);
+            navigate("/home");
+            console.log("deu certo");
+        });
+
+        promessa.catch(() => alert("Confira os dados inseridos."))
+    }
 
     return (
         <Tela>
@@ -62,7 +98,9 @@ export default function TelaPlano() {
                 <h1>R$ {preco.replace(".", ",")} cobrados mensalmente</h1>
             </Informacoes>
             <DadosDoCartao>
-                <form>
+                <form onSubmit={(e) => {
+                    e.preventDefault();
+                    setPopupLigado(true);}}>
                     <input required placeholder="Nome impresso no cartão" onChange={(e) => setNomeCartao(e.target.value)}/>
                     <input required placeholder="Dígitos do cartão" onChange={(e) => setDigitosCartao(e.target.value)}/>
                     <InputsMenores>
@@ -72,6 +110,16 @@ export default function TelaPlano() {
                     <button type="submit">ASSINAR</button>
                 </form>
             </DadosDoCartao>
+            <Popup popupLigado={popupLigado}>
+                <img src={fechar} onClick={() => setPopupLigado(false)} />
+                <InformacoesPopup>
+                    <h1>Tem certeza que deseja assinar o plano {dados.name} (R${preco.replace(".", ",")})?</h1>
+                    <Botoes>
+                        <BotaoNao onClick={() => setPopupLigado(false)}>Não</BotaoNao>
+                        <BotaoSim onClick={() => enviarPedidoAssinatura()}>SIM</BotaoSim>
+                    </Botoes>
+                </InformacoesPopup>
+            </Popup>
         </Tela>
     );
 }
@@ -234,4 +282,86 @@ const InputsMenores = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
+`
+
+const Popup = styled.div`
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: ${(props) => props.popupLigado ? "1" : "-1"};
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+
+    img {
+        width: 28px;
+        height: 25px;
+        margin-left: 80vw;
+        margin-top: 3vh;
+    }
+`
+
+const InformacoesPopup = styled.div`
+    width: 70vw;
+    height: 30vh;
+    background-color: white;
+
+    border-radius: 12px;
+    margin-bottom: 40vh;
+
+    h1 {
+        font-size: 18px;
+        font-weight: 700;
+        color: #000000;
+        font-family: 'Roboto';
+        margin: 10% 10%;
+        text-align: center;
+    }
+`;
+
+const Botoes = styled.div`
+    width: 70vw;
+    height: 10vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+`
+
+const BotaoNao = styled.div`
+    width: 30vw;
+    height: 10vh;
+
+    border-radius: 8px;
+
+    background-color: #CECECE;
+
+    font-family: 'Roboto';
+    font-size: 14px;
+    font-weight: 700;
+    color: #FFFFFF;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`
+
+const BotaoSim = styled.div`
+    width: 30vw;
+    height: 10vh;
+
+    border-radius: 8px;
+
+    background-color: #FF4791;
+
+    font-family: 'Roboto';
+    font-size: 14px;
+    font-weight: 700;
+    color: #FFFFFF;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
 `

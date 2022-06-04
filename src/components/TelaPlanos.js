@@ -46,7 +46,7 @@ function Plano({ imagem, preco, id }) {
     precoFormatado = "R$ " + precoFormatado;
 
     return(
-        <Link to={`/subscriptions/${id}`}>
+        <Link to={`/subscriptions/${id}`} style={{ textDecoration: "none" }}>
             <CardPlano>
                 <img src={imagem} />
                 <h1>{precoFormatado}</h1>
