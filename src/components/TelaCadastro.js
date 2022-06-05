@@ -33,10 +33,6 @@ export default function TelaCadastro() {
 
         promessa.then((response) => {
             navigate("/");
-            // let a = response.data;
-            // setDados(a);
-            // console.log(a);
-            // console.log(a.membership);
             }
         );
 

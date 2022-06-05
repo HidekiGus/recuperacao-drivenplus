@@ -1,6 +1,5 @@
-import ReactDOM from "react-dom";
 import React, { useEffect, useState } from "react";
-import { BrowserRouter, Routes, Route, Link, useParams, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
 
@@ -9,7 +8,7 @@ import { useContext } from "react";
 
 export default function TelaPlanos() {
 
-    const { token, setToken } = useContext(TokenContext);
+    const { token } = useContext(TokenContext);
     const [ planos, setPlanos ] = useState([]);
 
     useEffect(() => obtemPlanos(), []);

@@ -1,12 +1,12 @@
-import ReactDOM from "react-dom";
 import React, { useEffect, useState } from "react";
-import { BrowserRouter, Routes, Route, Link, useParams, useNavigate, Navigate } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
+import { useContext } from "react";
 import axios from "axios";
 import styled from "styled-components";
 
 import TokenContext from "../contexts/TokenContext";
-import DadosAssinaturaContext from "../contexts/DadosLoginContext";
-import { useContext } from "react";
+import DadosLoginContext from "../contexts/DadosLoginContext";
+import DadosAssinaturaContext from "../contexts/DadosAssinaturaContext";
 
 import seta from "../images/seta.png";
 import prancheta from "../images/prancheta.png";
@@ -16,8 +16,8 @@ import fechar from "../images/fechar.png";
 export default function TelaPlano() {
     
     const navigate = useNavigate();
+    const { setDadosAssinatura } = useContext(DadosAssinaturaContext);
     const { token } = useContext(TokenContext);
-    const { dadosAssinatura, setDadosAssinatura } = useContext(DadosAssinaturaContext);
     const { idDoPlano } = useParams();
     const [ dados, setDados ] = useState([]);
     const [ beneficios, setBeneficios ] = useState([]);
@@ -59,12 +59,10 @@ export default function TelaPlano() {
             expirationDate: validadeCartao
         }
 
-        console.log(corpo);
-
         const promessa = axios.post("https://mock-api.driven.com.br/api/v4/driven-plus/subscriptions", corpo, config);
 
         promessa.then((response) => {
-            setDadosAssinatura(response);
+            setDadosAssinatura(response.data.membership);
             navigate("/home");
         });
 

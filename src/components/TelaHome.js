@@ -1,38 +1,49 @@
-import ReactDOM from "react-dom";
-import React, { useEffect, useState } from "react";
-import { BrowserRouter, Routes, Route, Link, useParams, useNavigate } from "react-router-dom";
+import React from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
-
-import NomeUsuarioContext from "../contexts/NomeUsuarioContext";
-import DadosLoginContext from "../contexts/DadosLoginContext";
 import { useContext } from "react";
+
+import DadosLoginContext from "../contexts/DadosLoginContext";
+import DadosAssinaturaContext from "../contexts/DadosAssinaturaContext";
+import TokenContext from "../contexts/TokenContext";
 
 import iconePerfil from "../images/iconePerfil.png";
 
 
 export default function TelaHome() {
 
+    let navigate = useNavigate();
+    const { token } = useContext(TokenContext);
     const { dadosLogin } = useContext(DadosLoginContext);
+    const { dadosAssinatura } = useContext(DadosAssinaturaContext);
 
-    console.log(dadosLogin);
+    function cancelarPlano() {
+        let config = {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        }
 
-    let beneficios = dadosLogin.membership.perks;
+        let promessa = axios.delete("https://mock-api.driven.com.br/api/v4/driven-plus/subscriptions", config);
+
+        promessa.then(() => navigate("/subscriptions"));
+    }
 
     return (
         <>
         <Tela>
             <Imagens>
-                <ImagemLogo src={dadosLogin.membership.image} />
+                <ImagemLogo src={dadosAssinatura.length === 0 ? "" : dadosAssinatura.image} />
                 <ImagemPerfil src={iconePerfil} />
             </Imagens>
-            <h1>Olá, {dadosLogin.name}</h1>
+            <h1>Olá, {dadosLogin}</h1>
             <BotoesVariaveis>
-                {beneficios.map((beneficio, index) => <a href={beneficio.link}><button key={index}>{beneficio.title}</button></a>)}
+                {dadosAssinatura.perks === undefined ? "" : dadosAssinatura.perks.map((beneficio, index) => <a href={beneficio.link}><button key={index}>{beneficio.title}</button></a>)}
             </BotoesVariaveis>
             <BotoesConstantes>
-                <button>Mudar plano</button>
-                <button>Cancelar plano</button>
+                <button onClick={() => navigate("/subscriptions")}>Mudar plano</button>
+                <button onClick={() => cancelarPlano()}>Cancelar plano</button>
             </BotoesConstantes>
         </Tela>
         </>

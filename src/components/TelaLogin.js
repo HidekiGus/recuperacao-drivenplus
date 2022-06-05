@@ -1,14 +1,14 @@
-import ReactDOM from "react-dom";
-import React, { useEffect, useState } from "react";
-import { BrowserRouter, Routes, Route, Link, useParams, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
+import { useContext } from "react";
 
 import Logo from "../images/Logo.png";
 
 import TokenContext from "../contexts/TokenContext";
 import DadosLoginContext from "../contexts/DadosLoginContext";
-import { useContext } from "react";
+import DadosAssinaturaContext from "../contexts/DadosAssinaturaContext";
 
 
 export default function TelaLogin() {
@@ -16,6 +16,7 @@ export default function TelaLogin() {
     const navigate = useNavigate();
     const { token, setToken } = useContext(TokenContext);
     const { dadosLogin, setDadosLogin } = useContext(DadosLoginContext);
+    const { setDadosAssinatura } = useContext(DadosAssinaturaContext);
     const [ email, setEmail ] = useState('');
     const [ password, setPassword ] = useState('');
 
@@ -32,12 +33,9 @@ export default function TelaLogin() {
 
         promessa.then((response) => {
             let assinatura = response.data.membership;
-            setDadosLogin(response.data);
-            console.log(response.data);
-            console.log(assinatura);
-            let tokenRecebido = response.data.token;
-            setToken(tokenRecebido);
-            console.log(tokenRecebido);
+            setDadosLogin(response.data.name);
+            setToken(response.data.token);
+            setDadosAssinatura(assinatura);
             if (assinatura === null) {
                 navigate("/subscriptions");
             } else {
